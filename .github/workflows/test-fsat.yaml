@@ -16,7 +16,7 @@ jobs:
   ansible:
     runs-on: ${{ github.repository == 'hyperledger/fabric-samples' && 'fabric-ubuntu-22.04' || 'ubuntu-22.04' }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Set up Full Stack Runtime
         uses: ./.github/actions/fsat-setup
       - run: just test-ansible
@@ -25,16 +25,29 @@ jobs:
   appdev:
     runs-on: ${{ github.repository == 'hyperledger/fabric-samples' && 'fabric-ubuntu-22.04' || 'ubuntu-22.04' }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Set up Full Stack Runtime
         uses: ./.github/actions/fsat-setup
       - run: just test-appdev
         working-directory: full-stack-asset-transfer-guide
 
-  chaincode:
+  appdev-go:
     runs-on: ${{ github.repository == 'hyperledger/fabric-samples' && 'fabric-ubuntu-22.04' || 'ubuntu-22.04' }}
     steps:
       - uses: actions/checkout@v6
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: full-stack-asset-transfer-guide/applications/trader-go/go.mod
+      - name: Set up Full Stack Runtime
+        uses: ./.github/actions/fsat-setup
+      - run: just test-appdev-go
+        working-directory: full-stack-asset-transfer-guide
+
+  chaincode:
+    runs-on: ${{ github.repository == 'hyperledger/fabric-samples' && 'fabric-ubuntu-22.04' || 'ubuntu-22.04' }}
+    steps:
+      - uses: actions/checkout@v7
       - name: Set up Full Stack Runtime
         uses: ./.github/actions/fsat-setup
       - run: just test-chaincode
@@ -43,7 +56,7 @@ jobs:
   cloud:
     runs-on: ${{ github.repository == 'hyperledger/fabric-samples' && 'fabric-ubuntu-22.04' || 'ubuntu-22.04' }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Set up Full Stack Runtime
         uses: ./.github/actions/fsat-setup
       - run: just test-cloud
@@ -52,7 +65,7 @@ jobs:
   console:
     runs-on: ${{ github.repository == 'hyperledger/fabric-samples' && 'fabric-ubuntu-22.04' || 'ubuntu-22.04' }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Set up Full Stack Runtime
         uses: ./.github/actions/fsat-setup
       - run: just test-console
